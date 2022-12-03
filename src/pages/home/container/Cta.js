@@ -7,7 +7,7 @@ const Cta = () => {
   return (
     <section className="container w-full px-5 py-10 mx-auto">
       <div className="w-full max-w-md p-3 rounded-lg shadow mx-auto flex flex-nowrap gap-x-1">
-        <div className="flex-auto relative">
+        <div className="flex-1 relative">
           <AiOutlineMail className="absolute w-5 h-5 left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             className="w-full focus:outline-none h-full rounded-lg px-2 pl-9"
@@ -17,7 +17,7 @@ const Cta = () => {
             value={email}
           />
         </div>
-        <button className="rounded-lg bg-blue-600 text-white font-medium px-4 py-2">
+        <button className="w-fit rounded-lg bg-blue-600 text-white font-medium px-4 py-2">
           Sign Up
         </button>
       </div>

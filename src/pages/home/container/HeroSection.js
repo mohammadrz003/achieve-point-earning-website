@@ -4,16 +4,16 @@ import { images } from "../../../constants";
 
 const HeroSection = () => {
   return (
-    <section className="container flex w-full px-5 py-3 min-h-[calc(100vh-80px)] mx-auto border-b-2 border-b-gray-500 pb-12">
-      <div className="w-1/2 flex flex-col justify-center items-start">
-        <h2 className="text-6xl font-semibold leading-normal">
+    <section className="container flex flex-col-reverse lg:flex-row w-full px-5 py-3 min-h-[calc(100vh-80px) lg:max-h-[600px] mx-auto border-b-2 border-b-gray-500 pb-12">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start">
+        <h2 className="text-center text-3xl lg:text-left lg:text-5xl xl:text-6xl lg:leading-snug xl:leading-normal font-semibold leading-normal">
           Start Your Fantastic
           <br />
           Cryptocurrency
           <br />
           Mining Today
         </h2>
-        <p className="w-[80%] mt-3 leading-normal">
+        <p className="w-full text-center lg:text-left md:w-[80%] mt-3 leading-normal">
           Achieve Point Earning aims to extend business to the entire
           Cryptocurrency industry chain in the future
         </p>
@@ -30,7 +30,7 @@ const HeroSection = () => {
             </span>
           </span>
         </button>
-        <div className="w-full flex items-center gap-x-7 flex-wrap mt-6">
+        <div className="w-full flex items-center justify-center lg:justify-start gap-x-7 flex-wrap mt-6">
           <div className="flex items-center gap-x-2">
             <span className="bg-cyan-600 rounded-full w-5 h-5" />
             <p>Free Register</p>
@@ -41,7 +41,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/2 flex flex-col justify-center">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center">
         <img className="w-full h-auto" src={images.headerLogo} alt="logo" />
       </div>
     </section>

@@ -1,12 +1,14 @@
 import React from "react";
-import Plan from "../../../components/Plan";
+
+import Layout from "../../components/Layout";
+import Plan from "../../components/Plan";
 
 const PLANS_DATA = [
   {
     title: "Btc Star",
     starNumber: 1,
     caption: `We have a minute Rank Purchase of 200 APE token. Who will hold around
-    200 APE to 1999 APE will be a Silver Rank holder.`,
+      200 APE to 1999 APE will be a Silver Rank holder.`,
     listItems: [
       "Roi - 1% daily",
       "Refferal Rebeat - 5% instant Comission",
@@ -21,7 +23,7 @@ const PLANS_DATA = [
     listItems: [
       "Roi - 1.1% daily",
       `And BTC Mining system 0.00137 daily 
-      (1 BTC a Year) That can be withdrawn in a year`,
+        (1 BTC a Year) That can be withdrawn in a year`,
       `Refferal Rebeat - 5% instant Comission`,
       `2nd Level Refferal Rebeat -  3% instant Comission`,
     ],
@@ -41,30 +43,32 @@ const PLANS_DATA = [
   },
 ];
 
-const Category = () => {
+const MiningPage = () => {
   return (
-    <section className="container w-full px-5 py-10 mx-auto">
-      <h2 className="text-4xl md:text-5xl lg:text-7xl text-[#5A5A5A] text-center">
-        Category's
-      </h2>
-      <p className="text-center text-xl mt-8">
-        We have decided our Achievement rank in 3 Step's
-      </p>
-      <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-16">
-        {PLANS_DATA.map((value, index) => (
-          <div className="w-full md:w-[45%] lg:w-1/3">
-            <Plan
-              title={value.title}
-              starNumber={value.starNumber}
-              caption={value.caption}
-              listItems={value.listItems}
-              buyLink={value.buyLink}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
+    <Layout>
+      <section className="container w-full px-5 py-10 mx-auto">
+        <h2 className="text-4xl md:text-5xl lg:text-7xl text-[#5A5A5A] text-center">
+          Category's
+        </h2>
+        <p className="text-center text-xl mt-8">
+          We have decided our Achievement rank in 3 Step's
+        </p>
+        <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-16">
+          {PLANS_DATA.map((value, index) => (
+            <div className="w-full md:w-[45%] lg:w-1/3">
+              <Plan
+                title={value.title}
+                starNumber={value.starNumber}
+                caption={value.caption}
+                listItems={value.listItems}
+                buyLink={value.buyLink}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    </Layout>
   );
 };
 
-export default Category;
+export default MiningPage;
