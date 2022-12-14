@@ -21,7 +21,7 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <img className="w-10 lg:w-14 h-auto" src={images.logo} alt="logo" />
             <h1 className="text-sm lg:text-base font-bold">
-              Achieve Point Earning
+              Achive Point Earning
             </h1>
           </div>
           {showHeader ? (

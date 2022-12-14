@@ -8,7 +8,7 @@ const PLANS_DATA = [
     title: "Btc Star",
     starNumber: 1,
     caption: `We have a minute Rank Purchase of 200 APE token. Who will hold around
-      200 APE to 1999 APE will be a Silver Rank holder.`,
+    200 APE to 1999 APE will be a btc 1 Start rank holder.`,
     listItems: [
       "Roi - 1% daily",
       "Refferal Rebeat - 5% instant Comission",
@@ -19,11 +19,11 @@ const PLANS_DATA = [
   {
     title: "Btc Star",
     starNumber: 2,
-    caption: `In Gold Rank Purchase Rank Holder must hold At least 2000 APE to 3999 APE in his wallet.`,
+    caption: `In btc 2 Start rank Purchase Rank Holder must hold At least 2000 APE to 3999 APE in his wallet.`,
     listItems: [
       "Roi - 1.1% daily",
       `And BTC Mining system 0.00137 daily 
-        (1 BTC a Year) That can be withdrawn in a year`,
+      (1 BTC a Year) That can be withdrawn in a year`,
       `Refferal Rebeat - 5% instant Comission`,
       `2nd Level Refferal Rebeat -  3% instant Comission`,
     ],
@@ -32,7 +32,7 @@ const PLANS_DATA = [
   {
     title: "Btc Star",
     starNumber: 3,
-    caption: `Who will hold more then 4000 APE token will be granted as a Platinum Rank holder.`,
+    caption: `Who will hold more than 4000 APE token will be granted as a btc 3 Start rank holder.`,
     listItems: [
       "Roi - 1.2% daily",
       `And a BTC Mining system 0.00274 daily ( 1 BTC a year ) that can be withdrawn in a year.`,

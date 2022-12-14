@@ -14,15 +14,15 @@ const ProgramDetailsSection = () => {
         <h3 className="text-center font-bold text-6xl md:text-9xl">Details</h3>
       </div>
       <p className="mt-16 text-xl leading-loose">
-        We are announcing our affiliate Program. Archive the beat point to earn
+        We are announcing our affiliate Program. Achive the beat point to earn
         a big amount. The Ranked person can achieve the biggest point to get
         more reward. Everyone who want to participate in Affiliate program they
         have to follow our basic tasks. It's a chain based program in the
         community. Generate more poin to get the best rank.
       </p>
       <p className="mt-12 text-xl leading-loose">
-        Archive Point details :<br />
-        Archive Point Earning have it's own Token , Name APE token. We will
+        Achive Point details :<br />
+        Achive Point Earning have it's own Token , Name APE token. We will
         provide our users position depending on their holding of APE and there
         affiliate achievement.
       </p>

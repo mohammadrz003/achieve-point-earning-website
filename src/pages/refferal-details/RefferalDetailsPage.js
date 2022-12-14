@@ -12,12 +12,12 @@ const RefferalDetailsPage = () => {
           Refferal Details
         </h1>
         <p className="mt-10 text-lg leading-relaxed">
-          Rank Holder or Non Holder both can participate in Achieve Point
+          Rank Holder or Non Holder both can participate in Achive Point
           Refferal. Everyone who create account under his link and start Rank
           Purchase will be counted as successful Rank to get Comission.
         </p>
         <p className="mt-10 text-lg leading-relaxed">
-          Achieve Point Earning Details :<br />
+          Achive Point Earning Details :<br />
           Our app/website are prepared for the Affiliate program. People who
           joined the Rank Achievement program or didn't join the program both
           can earn fron Achievement Earnings from his daily Roi.

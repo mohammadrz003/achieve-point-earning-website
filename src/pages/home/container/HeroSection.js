@@ -14,7 +14,7 @@ const HeroSection = () => {
           Mining Today
         </h2>
         <p className="w-full text-center lg:text-left md:w-[80%] mt-3 leading-normal">
-          Achieve Point Earning aims to extend business to the entire
+          Achive Point Earning aims to extend business to the entire
           Cryptocurrency industry chain in the future
         </p>
         <button class="mt-7 bg-gray-800 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none">
