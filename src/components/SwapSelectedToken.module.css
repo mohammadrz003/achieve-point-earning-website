@@ -1,0 +1,4 @@
+.inputNumberHideArrow::-webkit-outer-spin-button,
+.inputNumberHideArrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

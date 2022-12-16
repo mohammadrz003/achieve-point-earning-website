@@ -45,22 +45,22 @@ const RefferalDetailsPage = () => {
         </h5>
         <div className="w-full flex mt-7">
           <div className="w-fit">
-            <table class="table p-4 bg-white rounded-lg shadow w-full">
+            <table className="table p-4 bg-white rounded-lg shadow w-full">
               <thead>
                 <tr>
-                  <th class="text-left border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+                  <th className="text-left border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
                     Rank Point
                   </th>
-                  <th class="text-left border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+                  <th className="text-left border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
                     Monthly Salary
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {TABLE_DATA.map((value, index) => (
-                  <tr class="text-gray-700">
-                    <td class="border-b-2 p-4 dark:border-dark-5">{index + 1}</td>
-                    <td class="border-b-2 p-4 dark:border-dark-5">{value}$</td>
+                  <tr className="text-gray-700">
+                    <td className="border-b-2 p-4 dark:border-dark-5">{index + 1}</td>
+                    <td className="border-b-2 p-4 dark:border-dark-5">{value}$</td>
                   </tr>
                 ))}
               </tbody>

@@ -2,7 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { images } from "../constants";
 
-const Plan = ({ title, starNumber, caption, listItems, buyLink }) => {
+const Plan = ({
+  title,
+  starNumber,
+  caption,
+  listItems,
+  buyLink,
+  onShowSwapModal,
+}) => {
+
   return (
     <div className="w-full flex flex-col rounded-lg shadow-md p-5">
       <h4 className="text-center text-3xl font-semibold text-[#5A5A5A]">
@@ -19,12 +27,13 @@ const Plan = ({ title, starNumber, caption, listItems, buyLink }) => {
           <li key={index}>{value}</li>
         ))}
       </ul>
-      <a
-        href={buyLink}
+      <button
+        onClick={onShowSwapModal}
+        type="button"
         className="rounded-lg border border-blue-500 px-6 py-3 mt-10 font-medium text-blue-500 text-center"
       >
         Buy Now
-      </a>
+      </button>
     </div>
   );
 };
