@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 
 import { images } from "../../constants";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
@@ -88,10 +90,13 @@ const LoginPage = () => {
             Sign up
           </Link>
         </div>
-        <Link to="/" className="text-blue-500 font-semibold flex items-center mt-7">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-blue-500 font-semibold flex items-center mt-7"
+        >
           <IoIosArrowBack className="w-7 h-7" />
-          <span>Home</span>
-        </Link>
+          <span>Go back</span>
+        </button>
       </div>
     </section>
   );

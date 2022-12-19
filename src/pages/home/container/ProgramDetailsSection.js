@@ -18,7 +18,7 @@ const ProgramDetailsSection = () => {
         a big amount. The Ranked person can achieve the biggest point to get
         more reward. Everyone who want to participate in Affiliate program they
         have to follow our basic tasks. It's a chain based program in the
-        community. Generate more poin to get the best rank.
+        community. Generate more point hob to get the best rank.
       </p>
       <p className="mt-12 text-xl leading-loose">
         Achive Point details :<br />

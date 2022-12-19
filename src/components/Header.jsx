@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
@@ -8,70 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { images } from "../constants";
 import { walletActions } from "../store/reducers/walletReducer";
+import { AppContext } from "../context/context";
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const { connectWalletHandler } = useContext(AppContext);
   const walletState = useSelector((state) => state.wallet);
   const [showHeader, setShowHeader] = useState(false);
-
-  const connectWalletHandler = () => {
-    if (window.ethereum) {
-      // matamask is installed
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((result) => {
-          accountChangeHandler(result[0]);
-        });
-    } else {
-      toast.error("Install Metamask", {
-        position: "top-right",
-      });
-    }
-  };
-
-  const getUserBalanceHandler = useCallback(
-    (address) => {
-      window.ethereum
-        .request({ method: "eth_getBalance", params: [address, "latest"] })
-        .then((balance) => {
-          dispatch(
-            walletActions.setWalletBalance(
-              ethers.utils.formatEther(balance, "ether")
-            )
-          );
-        });
-    },
-    [dispatch]
-  );
-
-  const accountChangeHandler = useCallback(
-    (newAccount) => {
-      if (newAccount.length !== 0) {
-        dispatch(walletActions.setAccountAddress(newAccount));
-        getUserBalanceHandler(newAccount.toString());
-      } else {
-        dispatch(walletActions.setAccountAddress(""));
-        dispatch(walletActions.setWalletBalance(""));
-      }
-    },
-    [dispatch, getUserBalanceHandler]
-  );
-
-  const chainChangeHandler = (chainId) => {
-    console.log(parseInt(chainId, 16));
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    try {
-      window.ethereum.on("accountsChanged", accountChangeHandler);
-      window.ethereum.on("chainChanged", chainChangeHandler);
-    } catch (error) {
-      toast.error(error.message, {
-        position: "top-right",
-      });
-    }
-  }, [accountChangeHandler]);
 
   const toggleHeaderHandler = () => {
     setShowHeader((prevState) => {
@@ -125,24 +67,26 @@ const Header = () => {
               Refferal Details
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/swap" className="px-3 py-1.5 cursor-pointer block">
               Swap
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/" className="px-3 py-1.5 cursor-pointer block">
               About us
             </Link>
           </li>
-          <li className="w-full lg:w-auto mt-2 lg:mt-0">
-            <Link
-              to="/login"
-              className="w-full lg:w-auto text-center px-3 py-1.5 cursor-pointer border border-blue-600 text-blue-600 rounded-lg block"
-            >
-              Login
-            </Link>
-          </li>
+          {walletState.walletAddress.length > 0 && (
+            <li className="w-full lg:w-auto mt-2 lg:mt-0">
+              <Link
+                to="/login"
+                className="w-full lg:w-auto text-center px-3 py-1.5 cursor-pointer border border-blue-600 text-blue-600 rounded-lg block"
+              >
+                Login
+              </Link>
+            </li>
+          )}
           <li className="w-full lg:w-auto mt-2 lg:mt-0">
             <button
               onClick={connectWalletHandler}

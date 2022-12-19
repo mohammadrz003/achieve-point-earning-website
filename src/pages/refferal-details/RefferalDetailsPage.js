@@ -25,7 +25,7 @@ const RefferalDetailsPage = () => {
         <p className="mt-9 text-lg font-light italic leading-relaxed">
           Example:- If anyone is not interested to Rank Up his team , Making
           refferal he also can Earn only from his achievement purchase. Make a
-          purchase stary getting your daily roi depending on your Rank.{" "}
+          purchase start getting your daily roi depending on your Rank.{" "}
         </p>
         <p className="mt-9 text-lg leading-relaxed">
           Rank Upgrade Details:
