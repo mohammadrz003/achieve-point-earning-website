@@ -1,4 +1,5 @@
 import React from "react";
+import Pdf from "../../../assets/Affiliate-Program-Presentation.pdf";
 
 import { images } from "../../../constants";
 
@@ -17,19 +18,29 @@ const HeroSection = () => {
           Achive Point Earning aims to extend business to the entire
           Cryptocurrency industry chain in the future
         </p>
-        <button class="mt-7 bg-gray-800 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none">
-          <img
-            className="w-6 h-auto"
-            src={images.googlePlay}
-            alt="google-play"
-          />
-          <span className="ml-4 flex items-start flex-col leading-none">
-            <span className="text-xs text-gray-100 mb-1">GET IT ON</span>
-            <span className="title-font font-medium text-gray-50">
-              Google Play
+        <div className="flex flex-col items-center justify-center lg:space-x-5 lg:flex-row">
+          <button class="mt-7 bg-gray-800 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none">
+            <img
+              className="w-6 h-auto"
+              src={images.googlePlay}
+              alt="google-play"
+            />
+            <span className="ml-4 flex items-start flex-col leading-none">
+              <span className="text-xs text-gray-100 mb-1">GET IT ON</span>
+              <span className="title-font font-medium text-gray-50">
+                Google Play
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+          <a
+            href={Pdf}
+            target="_blank"
+            rel="noreferrer"
+            class="text-white mt-7 bg-gray-800 inline-flex py-4 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none"
+          >
+            Download Whitepaper
+          </a>
+        </div>
         <div className="w-full flex items-center justify-center lg:justify-start gap-x-7 flex-wrap mt-6">
           <div className="flex items-center gap-x-2">
             <span className="bg-cyan-600 rounded-full w-5 h-5" />
