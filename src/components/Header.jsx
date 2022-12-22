@@ -13,6 +13,7 @@ import { AppContext } from "../context/context";
 const Header = () => {
   const { connectWalletHandler } = useContext(AppContext);
   const walletState = useSelector((state) => state.wallet);
+  const authState = useSelector((state) => state.auth)
   const [showHeader, setShowHeader] = useState(false);
 
   const toggleHeaderHandler = () => {
@@ -77,7 +78,7 @@ const Header = () => {
               About us
             </Link>
           </li>
-          {walletState.walletAddress.length > 0 && (
+          {walletState.walletAddress.length > 0 && !authState.isLoggedIn && (
             <li className="w-full lg:w-auto mt-2 lg:mt-0">
               <Link
                 to="/login"

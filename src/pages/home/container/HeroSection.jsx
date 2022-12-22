@@ -19,7 +19,7 @@ const HeroSection = () => {
           Cryptocurrency industry chain in the future
         </p>
         <div className="flex flex-col items-center justify-center lg:space-x-5 lg:flex-row">
-          <button class="mt-7 bg-gray-800 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none">
+          <button className="mt-7 bg-gray-800 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none">
             <img
               className="w-6 h-auto"
               src={images.googlePlay}
@@ -36,7 +36,7 @@ const HeroSection = () => {
             href={Pdf}
             target="_blank"
             rel="noreferrer"
-            class="text-white mt-7 bg-gray-800 inline-flex py-4 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none"
+            className="text-white mt-7 bg-gray-800 inline-flex py-4 px-5 rounded-lg items-center hover:bg-gray-900 focus:outline-none"
           >
             Download Whitepaper
           </a>

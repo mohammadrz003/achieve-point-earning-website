@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
+import toast from "react-hot-toast";
+import axios from "axios";
 
-import { images } from "../../constants";
+import { API, images } from "../../constants";
+import { useSelector } from "react-redux";
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const walletState = useSelector((state) => state.wallet);
 
   const [inputValues, setInputValues] = useState({
-    username: "",
     email: "",
     password: "",
   });
@@ -20,8 +23,28 @@ const SignupPage = () => {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    const userAccountSchema = {
+      email: inputValues.email,
+      password: inputValues.password,
+      Wallet: walletState.walletAddress,
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${API.API_URL}/auth/signup`,
+        userAccountSchema
+      );
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/login");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -34,20 +57,24 @@ const SignupPage = () => {
             <span className="text-sm">Please create your account.</span>
           </div>
         </div>
+        <div className="w-full flex justify-between items-center mt-10 max-w-md gap-x-4">
+          <Link
+            to="/login"
+            className="flex-1 border border-blue-500 text-center rounded-full text-blue-500 px-4 py-2"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="flex-1 bg-blue-500 text-center rounded-full text-white px-4 py-2"
+          >
+            Sign up
+          </Link>
+        </div>
         <form
           className="mt-14 w-full max-w-md space-y-2"
           onSubmit={submitHandler}
         >
-          <div className="w-full">
-            <input
-              className="w-full border-b-2 border-b-gray-200 focus:outline-none py-3"
-              type="text"
-              name="username"
-              placeholder="Username"
-              onChange={changeInputHandler}
-              value={inputValues.email}
-            />
-          </div>
           <div className="w-full">
             <input
               className="w-full border-b-2 border-b-gray-200 focus:outline-none py-3"
@@ -81,21 +108,13 @@ const SignupPage = () => {
               </label>
             </div>
           </div>
-        </form>
-        <div className="w-full flex justify-between items-center mt-10 max-w-md gap-x-4">
-          <Link
-            to="/login"
-            className="flex-1 border border-blue-500 text-center rounded-full text-blue-500 px-4 py-2"
-          >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            className="flex-1 bg-blue-500 text-center rounded-full text-white px-4 py-2"
+          <button
+            type="submit"
+            className="w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
           >
             Sign up
-          </Link>
-        </div>
+          </button>
+        </form>
         <button
           onClick={() => navigate(-1)}
           className="text-blue-500 font-semibold flex items-center mt-7"

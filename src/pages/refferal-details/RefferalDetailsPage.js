@@ -58,16 +58,20 @@ const RefferalDetailsPage = () => {
               </thead>
               <tbody>
                 {TABLE_DATA.map((value, index) => (
-                  <tr className="text-gray-700">
-                    <td className="border-b-2 p-4 dark:border-dark-5">{index + 1}</td>
-                    <td className="border-b-2 p-4 dark:border-dark-5">{value}$</td>
+                  <tr key={index} className="text-gray-700">
+                    <td className="border-b-2 p-4 dark:border-dark-5">
+                      {index + 1}
+                    </td>
+                    <td className="border-b-2 p-4 dark:border-dark-5">
+                      {value}$
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <div className="hidden md:flex flex-1 items-center">
-              <img className="w-full h-auto" src={images.headerLogo} alt="logo" />
+            <img className="w-full h-auto" src={images.headerLogo} alt="logo" />
           </div>
         </div>
       </section>

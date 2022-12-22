@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 
-import { images } from "../../constants";
+import { API, images } from "../../constants";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { authActions } from "../../store/reducers/authReducer";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const walletState = useSelector((state) => state.wallet);
 
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -19,8 +25,34 @@ const LoginPage = () => {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const userAccountSchema = {
+      email: inputValues.email,
+      password: inputValues.password,
+      Wallet: walletState.walletAddress,
+    };
+
+    console.log(userAccountSchema);
+
+    try {
+      const { data } = await axios.post(
+        `${API.API_URL}/auth/login`,
+        userAccountSchema
+      );
+      if (data.success) {
+        toast.success(data.message);
+        dispatch(authActions.setUser(data.user));
+        dispatch(authActions.setIsLoggedIn(true));
+        navigate("/mining");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log("error:", error);
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -34,6 +66,20 @@ const LoginPage = () => {
             </span>
             <span className="text-sm">Please login to your account.</span>
           </div>
+        </div>
+        <div className="w-full flex justify-between items-center mt-10 max-w-md gap-x-4">
+          <Link
+            to="/login"
+            className="flex-1 bg-blue-500 text-center rounded-full text-white px-4 py-2"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="flex-1 border border-blue-500 text-center rounded-full text-blue-500 px-4 py-2"
+          >
+            Sign up
+          </Link>
         </div>
         <form
           className="mt-14 w-full max-w-md space-y-2"
@@ -71,25 +117,18 @@ const LoginPage = () => {
                 Remember me
               </label>
             </div>
-            <Link to="/login" className="text-sm">
+            {/* <Link to="/login" className="text-sm">
               Forgot Password
-            </Link>
+            </Link> */}
           </div>
-        </form>
-        <div className="w-full flex justify-between items-center mt-10 max-w-md gap-x-4">
-          <Link
-            to="/login"
-            className="flex-1 bg-blue-500 text-center rounded-full text-white px-4 py-2"
+          <button
+            type="submit"
+            className="w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
           >
             Login
-          </Link>
-          <Link
-            to="/signup"
-            className="flex-1 border border-blue-500 text-center rounded-full text-blue-500 px-4 py-2"
-          >
-            Sign up
-          </Link>
-        </div>
+          </button>
+        </form>
+
         <button
           onClick={() => navigate(-1)}
           className="text-blue-500 font-semibold flex items-center mt-7"

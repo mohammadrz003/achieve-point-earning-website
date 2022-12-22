@@ -6,12 +6,18 @@ import { ethers } from "ethers";
 import axios from "axios";
 
 import SwapSelectedToken from "../../components/SwapSelectedToken";
-import { api, images, TOKEN } from "../../constants";
+import { API, images, TOKEN } from "../../constants";
 import styles from "./SwapPage.module.css";
 import tokenABI from "../../abi.json";
 import toast from "react-hot-toast";
 
-const SwapPage = () => {
+const SwapPage = ({
+  userProfile,
+  onRefresherHelperHandler,
+  onToggleVisibility,
+  loading,
+  setLoading,
+}) => {
   const [inputValues, setInputValues] = useState({
     busdAmount: "0",
     apeAmount: "0",
@@ -27,29 +33,49 @@ const SwapPage = () => {
         return { [name]: value, busdAmount: (+value * 4) / 1 };
       });
     }
-    // setInputValues((curState) => {
-    //   return { ...curState, [name]: value };
-    // });
   };
 
   const submitHandler = async () => {
-    if (!(Number(inputValues.busdAmount) > 0)) {
-      toast.error("Enter a valid amount");
-      return;
+    try {
+      if (!(Number(inputValues.busdAmount) > 0)) {
+        toast.error("Enter a valid amount");
+        return;
+      }
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const tokenAddress = TOKEN.busdContract;
+
+      const token = new ethers.Contract(tokenAddress, tokenABI, signer);
+
+      setLoading(true);
+      const transaction = await token.transfer(
+        TOKEN.projectOwnerRecipientAddress,
+        ethers.utils.parseUnits(inputValues.busdAmount, "ether")
+      );
+
+      const { data } = await axios.post(
+        `${API.API_URL}/tokenTransfer/approveBusdPayment`,
+        {
+          user: {
+            email: userProfile.email,
+            Wallet: userProfile.Wallet,
+          },
+          transaction: transaction,
+          transferedBusdAmount: Number(inputValues.busdAmount),
+          network: TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
+        }
+      );
+      setLoading(false);
+      onRefresherHelperHandler();
+      onToggleVisibility();
+      toast.success(data.message, {
+        position: "top-center",
+        duration: 6000,
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-
-    const tokenAddress = TOKEN.busdContract;
-
-    const token = new ethers.Contract(tokenAddress, tokenABI, signer);
-
-    const transaction = await token.transfer(
-      TOKEN.projectOwnerRecipientAddress,
-      ethers.utils.parseUnits(inputValues.busdAmount, "ether")
-    );
-
-    console.log(transaction);
   };
 
   return (
@@ -104,9 +130,10 @@ const SwapPage = () => {
       <button
         onClick={submitHandler}
         type="button"
-        className="w-full text-center bg-cyan-500 text-white rounded-xl mt-6 px-3 py-3 font-semibold"
+        className="disabled:opacity-50 disabled:cursor-not-allowed w-full text-center bg-cyan-500 text-white rounded-xl mt-6 px-3 py-3 font-semibold"
+        disabled={loading}
       >
-        Buy Ape Token
+        {loading ? "Processing..." : "Buy Ape Token"}
       </button>
     </div>
     //     </div>

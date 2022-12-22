@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 import "./App.css";
@@ -8,14 +8,17 @@ import RefferalDetailsPage from "./pages/refferal-details/RefferalDetailsPage";
 import MiningPage from "./pages/mining/MiningPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/Signup";
-import SwapPage from "./pages/swap/SwapPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { walletActions } from "./store/reducers/walletReducer";
 import { ethers } from "ethers";
 import { AppContext } from "./context/context";
+import DoSthAfterRedirect from "./components/DoSthAfterRedirect";
+import { authActions } from "./store/reducers/authReducer";
 
 function App() {
   const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+  const walletState = useSelector((state) => state.wallet);
 
   const connectWalletHandler = () => {
     if (window.ethereum) {
@@ -23,7 +26,7 @@ function App() {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
-          accountChangeHandler(result[0]);
+          accountChangeHandler(result);
         });
     } else {
       toast.error("Install Metamask", {
@@ -50,11 +53,15 @@ function App() {
   const accountChangeHandler = useCallback(
     (newAccount) => {
       if (newAccount.length !== 0) {
-        dispatch(walletActions.setAccountAddress(newAccount));
+        dispatch(walletActions.setAccountAddress(newAccount[0]));
         getUserBalanceHandler(newAccount.toString());
+        dispatch(authActions.setIsLoggedIn(false));
+        dispatch(authActions.setUser({}));
       } else {
         dispatch(walletActions.setAccountAddress(""));
         dispatch(walletActions.setWalletBalance(""));
+        dispatch(authActions.setIsLoggedIn(false));
+        dispatch(authActions.setUser({}));
       }
     },
     [dispatch, getUserBalanceHandler]
@@ -64,6 +71,16 @@ function App() {
     console.log(parseInt(chainId, 16));
     window.location.reload();
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "account",
+      JSON.stringify({ user: authState.user, token: authState.token })
+    );
+    if (Object.keys(authState.user).length > 0 || authState.token) {
+      dispatch(authActions.setIsLoggedIn(true));
+    }
+  }, [authState.user, authState.token, dispatch]);
 
   useEffect(() => {
     try {
@@ -78,14 +95,28 @@ function App() {
 
   return (
     <div className="App">
-      <AppContext.Provider value={{connectWalletHandler}}>
+      <AppContext.Provider value={{ connectWalletHandler }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/mining" element={<MiningPage />} />
+          <Route
+            path="/mining"
+            element={
+              walletState.walletAddress && authState.isLoggedIn ? (
+                <MiningPage />
+              ) : walletState.walletAddress ? (
+                <LoginPage />
+              ) : (
+                <DoSthAfterRedirect
+                  callbackFn={() => toast.error("Connect Wallet first.")}
+                >
+                  <Navigate to="/" replace />
+                </DoSthAfterRedirect>
+              )
+            }
+          />
           <Route path="/refferal-details" element={<RefferalDetailsPage />} />
-          {/* <Route path="/swap" element={<SwapPage />} /> */}
         </Routes>
       </AppContext.Provider>
       <Toaster />

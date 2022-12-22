@@ -52,7 +52,7 @@ const Category = () => {
       </p>
       <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-16">
         {PLANS_DATA.map((value, index) => (
-          <div className="w-full md:w-[45%] lg:w-1/3">
+          <div key={index} className="w-full md:w-[45%] lg:w-1/3">
             <Plan
               title={value.title}
               starNumber={value.starNumber}

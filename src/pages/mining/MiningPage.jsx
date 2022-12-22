@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Layout from "../../components/Layout";
 import Modal from "../../components/Modal";
 import Plan from "../../components/Plan";
-import WalletCard from "../../components/WalletCard";
 import SwapPage from "../swap/SwapPage";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { handleNetworkSwitch } from "../../utils";
+import axios from "axios";
+import { API, TOKEN } from "../../constants";
+import Profile from "../../components/Profile";
 
 const PLANS_DATA = [
   {
@@ -50,7 +52,11 @@ const PLANS_DATA = [
 ];
 
 const MiningPage = () => {
+  const authState = useSelector((state) => state.auth);
   const walletState = useSelector((state) => state.wallet);
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [refresherHelper, setRefresherHelper] = useState(0);
 
   const [showSwapModal, setShowSwapModal] = useState(false);
 
@@ -60,7 +66,9 @@ const MiningPage = () => {
         position: "top-center",
       });
     } else {
-      const switchNetworkResult = await handleNetworkSwitch("bscTestnet");
+      const switchNetworkResult = await handleNetworkSwitch(
+        TOKEN.networkType === "MAINNET" ? "bsc" : "bscTestnet"
+      );
       if (switchNetworkResult === true) {
         setShowSwapModal((curState) => {
           return !curState;
@@ -69,38 +77,61 @@ const MiningPage = () => {
     }
   };
 
+  const refresherHelperHandler = () => {
+    setRefresherHelper((curState) => curState + 1);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get(
+        `${API.API_URL}/auth/profile/${authState.user._id}`
+      );
+      setUserProfile(data.user);
+    })();
+  }, [authState.user._id, refresherHelper]);
+
   return (
     <>
       <Modal
         isModalOpen={showSwapModal}
         toggleVisibility={showSwapModalHandler}
       >
-        <SwapPage />
+        <SwapPage
+          userProfile={userProfile}
+          onRefresherHelperHandler={refresherHelperHandler}
+          onToggleVisibility={showSwapModalHandler}
+          loading={loading}
+          setLoading={setLoading}
+        />
       </Modal>
       <Layout>
-        <section className="container w-full px-5 py-10 mx-auto">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl text-[#5A5A5A] text-center">
-            Category's
-          </h2>
-          <p className="text-center text-xl mt-8">
-            We have decided our Achievement rank in 3 Step's
-          </p>
-          {/* <WalletCard /> */}
-          <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-16">
-            {PLANS_DATA.map((value, index) => (
-              <div key={index} className="w-full md:w-[45%] lg:w-1/3">
-                <Plan
-                  title={value.title}
-                  starNumber={value.starNumber}
-                  caption={value.caption}
-                  listItems={value.listItems}
-                  buyLink={value.buyLink}
-                  onShowSwapModal={showSwapModalHandler}
-                />
-              </div>
-            ))}
-          </div>
-        </section>
+        <div className="bg-[#EEEEEE]">
+          <section className="container w-full px-5 py-10 mx-auto flex flex-col items-center">
+            <h2 className="text-4xl md:text-5xl lg:text-7xl text-[#5A5A5A] text-center">
+              Category's
+            </h2>
+            <p className="text-center text-xl mt-8 mb-8">
+              We have decided our Achievement rank in 3 Step's
+            </p>
+
+            <Profile userProfile={userProfile} />
+
+            <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-12">
+              {PLANS_DATA.map((value, index) => (
+                <div key={index} className="w-full md:w-[45%] lg:w-1/3">
+                  <Plan
+                    title={value.title}
+                    starNumber={value.starNumber}
+                    caption={value.caption}
+                    listItems={value.listItems}
+                    buyLink={value.buyLink}
+                    onShowSwapModal={showSwapModalHandler}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </Layout>
     </>
   );

@@ -45,8 +45,9 @@ const networks = {
 };
 
 const busdContract = "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee";
-const projectOwnerRecipientAddress = "0xa99EF623221ac34Fd920Bc868A0Cac1578710b2E"
+const projectOwnerRecipientAddress = "0xa99EF623221ac34Fd920Bc868A0Cac1578710b2E";
+const networkType = "TESTNET"
 
-const TOKEN = { busdContract, networks, projectOwnerRecipientAddress };
+const TOKEN = { busdContract, networks, projectOwnerRecipientAddress, networkType };
 
 export default TOKEN;
