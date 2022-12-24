@@ -10,6 +10,7 @@ import { handleNetworkSwitch } from "../../utils";
 import axios from "axios";
 import { API, TOKEN } from "../../constants";
 import Profile from "../../components/Profile";
+import ManageIndividualPlans from "./ManageIndividualPlans";
 
 const PLANS_DATA = [
   {
@@ -81,14 +82,29 @@ const MiningPage = () => {
     setRefresherHelper((curState) => curState + 1);
   };
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const { data } = await axios.get(
+  //       `${API.API_URL}/auth/profile/${authState.user._id}`
+  //     );
+  //     setUserProfile(data.user);
+  //   })();
+  // }, [authState.user._id, refresherHelper]);
+
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(
-        `${API.API_URL}/auth/profile/${authState.user._id}`
+      const { data } = await axios.post(
+        `${API.API_URL}/tokenTransfer/evaluatePlans`,
+        {
+          user: {
+            email: authState.user.email,
+            Wallet: walletState.walletAddress,
+          },
+        }
       );
       setUserProfile(data.user);
     })();
-  }, [authState.user._id, refresherHelper]);
+  }, [refresherHelper, authState.user.email, walletState.walletAddress]);
 
   return (
     <>
@@ -114,7 +130,10 @@ const MiningPage = () => {
               We have decided our Achievement rank in 3 Step's
             </p>
 
-            <Profile userProfile={userProfile} />
+            <Profile
+              userProfile={userProfile}
+              onClickHandler={showSwapModalHandler}
+            />
 
             <div className="w-full flex flex-col flex-wrap md:flex-row md:justify-center lg:flex-nowrap gap-y-6 lg:gap-y-0 gap-x-5 mt-12">
               {PLANS_DATA.map((value, index) => (
@@ -124,12 +143,17 @@ const MiningPage = () => {
                     starNumber={value.starNumber}
                     caption={value.caption}
                     listItems={value.listItems}
-                    buyLink={value.buyLink}
-                    onShowSwapModal={showSwapModalHandler}
+                    planType={value.starNumber}
+                    userProfile={userProfile}
+                    setUserProfile={setUserProfile}
                   />
                 </div>
               ))}
             </div>
+            <ManageIndividualPlans
+              userProfile={userProfile}
+              setUserProfile={setUserProfile}
+            />
           </section>
         </div>
       </Layout>

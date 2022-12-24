@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 const SignupPage = () => {
   const navigate = useNavigate();
   const walletState = useSelector((state) => state.wallet);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -25,6 +26,7 @@ const SignupPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
     const userAccountSchema = {
       email: inputValues.email,
       password: inputValues.password,
@@ -36,14 +38,12 @@ const SignupPage = () => {
         `${API.API_URL}/auth/signup`,
         userAccountSchema
       );
-      if (data.success) {
-        toast.success(data.message);
-        navigate("/login");
-      } else {
-        toast.error(data.message);
-      }
+      toast.success(data.message);
+      setIsSubmitted(false);
+      navigate("/login");
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
+      setIsSubmitted(false);
     }
   };
 
@@ -109,8 +109,9 @@ const SignupPage = () => {
             </div>
           </div>
           <button
+            disabled={isSubmitted}
             type="submit"
-            className="w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
+            className="disabled:cursor-not-allowed disabled:opacity-70 w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
           >
             Sign up
           </button>

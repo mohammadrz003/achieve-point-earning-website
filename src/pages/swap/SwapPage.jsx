@@ -74,7 +74,10 @@ const SwapPage = ({
         duration: 6000,
       });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error("transaction is rejected.");
+      setLoading(false);
+      onRefresherHelperHandler();
+      onToggleVisibility();
     }
   };
 
@@ -119,7 +122,7 @@ const SwapPage = ({
         <div className="w-full flex flex-col space-y-2">
           <span className="text-gray-600 text-xs font-medium">You receive</span>
           <SwapSelectedToken
-            img={images.starTokenLogo}
+            img={images.apeLogo}
             tokenSymbol="APE"
             name="apeAmount"
             onChangeHandler={inputChangeHandler}

@@ -2,7 +2,7 @@ import React from "react";
 
 import { images } from "../constants";
 
-const Profile = ({ userProfile }) => {
+const Profile = ({ userProfile, onClickHandler }) => {
   return (
     <div className="relative overflow-hidden bg-white rounded-lg shadow w-60 md:w-72">
       <img
@@ -20,6 +20,9 @@ const Profile = ({ userProfile }) => {
           </dd>
           <dd className="font-semibold text-gray-500">
             <span>$ {userProfile ? userProfile.Balance * 4 : "loading..."}</span>
+          </dd>
+          <dd className="mt-2.5">
+            <button onClick={onClickHandler} className="w-full px-2 py-2 rounded-lg bg-cyan-500 text-white font-bold">Buy More</button>
           </dd>
         </dl>
       </div>

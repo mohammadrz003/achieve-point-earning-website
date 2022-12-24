@@ -44,10 +44,22 @@ const networks = {
   },
 };
 
-const busdContract = "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee";
-const projectOwnerRecipientAddress = "0xa99EF623221ac34Fd920Bc868A0Cac1578710b2E";
-const networkType = "TESTNET"
+const busdContract = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56";
+const projectOwnerRecipientAddress =
+  "0xced7B359382bF3f84BE715B496CbA83887aD3529";
+const networkType = "MAINNET";
+const planOneMinimum = 25;
+const planTwoMinimum = 250;
+const planThreeMinimum = 500;
 
-const TOKEN = { busdContract, networks, projectOwnerRecipientAddress, networkType };
+const TOKEN = {
+  busdContract,
+  networks,
+  projectOwnerRecipientAddress,
+  networkType,
+  planOneMinimum,
+  planTwoMinimum,
+  planThreeMinimum,
+};
 
 export default TOKEN;

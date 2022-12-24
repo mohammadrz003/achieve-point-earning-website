@@ -4,7 +4,6 @@ const Modal = ({
   children,
   isModalOpen,
   toggleVisibility,
-  preventToggling,
 }) => {
   if (!isModalOpen) {
     return <></>;
@@ -14,7 +13,7 @@ const Modal = ({
     <div className="w-full fixed inset-0 z-10 flex justify-center items-center">
       <div
         className="fixed inset-0 z-10 bg-black opacity-60"
-        onClick={() => toggleVisibility(preventToggling)}
+        onClick={() => toggleVisibility()}
       />
       {children}
     </div>

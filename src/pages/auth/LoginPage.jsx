@@ -12,6 +12,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const walletState = useSelector((state) => state.wallet);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -27,6 +28,7 @@ const LoginPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
 
     const userAccountSchema = {
       email: inputValues.email,
@@ -34,23 +36,18 @@ const LoginPage = () => {
       Wallet: walletState.walletAddress,
     };
 
-    console.log(userAccountSchema);
-
     try {
       const { data } = await axios.post(
         `${API.API_URL}/auth/login`,
         userAccountSchema
       );
-      if (data.success) {
-        toast.success(data.message);
-        dispatch(authActions.setUser(data.user));
-        dispatch(authActions.setIsLoggedIn(true));
-        navigate("/mining");
-      } else {
-        toast.error(data.message);
-      }
+      toast.success(data.message);
+      dispatch(authActions.setUser(data.user));
+      dispatch(authActions.setIsLoggedIn(true));
+      setIsSubmitted(false);
+      navigate("/mining");
     } catch (error) {
-      console.log("error:", error);
+      setIsSubmitted(false);
       toast.error(error.response.data.message);
     }
   };
@@ -122,8 +119,9 @@ const LoginPage = () => {
             </Link> */}
           </div>
           <button
+            disabled={isSubmitted}
             type="submit"
-            className="w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
+            className="disabled:cursor-not-allowed disabled:opacity-70 w-full border bg-blue-500 text-center rounded-full text-white px-4 py-2"
           >
             Login
           </button>
