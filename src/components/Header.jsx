@@ -2,18 +2,16 @@ import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
-import { ethers } from "ethers";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { images } from "../constants";
-import { walletActions } from "../store/reducers/walletReducer";
 import { AppContext } from "../context/context";
+import { Web3Button } from "@web3modal/react";
 
 const Header = () => {
   const { connectWalletHandler } = useContext(AppContext);
   const walletState = useSelector((state) => state.wallet);
-  const authState = useSelector((state) => state.auth)
+  const authState = useSelector((state) => state.auth);
   const [showHeader, setShowHeader] = useState(false);
 
   const toggleHeaderHandler = () => {
@@ -89,7 +87,8 @@ const Header = () => {
             </li>
           )}
           <li className="w-full lg:w-auto mt-2 lg:mt-0">
-            <button
+            <Web3Button />
+            {/* <button
               onClick={connectWalletHandler}
               type="button"
               className="w-full lg:w-auto text-center px-3 py-1.5 cursor-pointer border bg-blue-600 text-white rounded-lg block"
@@ -100,7 +99,7 @@ const Header = () => {
                     5
                   )}...${walletState.walletAddress.slice(-4)}`
                 : "Connect Wallet"}
-            </button>
+            </button> */}
           </li>
         </ul>
       </header>

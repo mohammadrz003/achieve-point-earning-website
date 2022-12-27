@@ -15,10 +15,41 @@ import { AppContext } from "./context/context";
 import DoSthAfterRedirect from "./components/DoSthAfterRedirect";
 import { authActions } from "./store/reducers/authReducer";
 
+// wallet connect
+import {
+  EthereumClient,
+  modalConnectors,
+  walletConnectProvider,
+} from "@web3modal/ethereum";
+
+import { Web3Modal } from "@web3modal/react";
+
+import { configureChains, createClient, WagmiConfig, useAccount } from "wagmi";
+
+import { bsc, bscTestnet } from "wagmi/chains";
+import { API } from "./constants";
+
+// configure
+const chains = [bsc, bscTestnet];
+
+// Wagmi client
+const { provider } = configureChains(chains, [
+  walletConnectProvider({ projectId: API.WALLET_CONNECT_PROJECT_ID }),
+]);
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: modalConnectors({ appName: "achive-point", chains }),
+  provider,
+});
+
+// Web3Modal Ethereum Client
+const ethereumClient = new EthereumClient(wagmiClient, chains);
+
 function App() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const walletState = useSelector((state) => state.wallet);
+  const { address, isConnected } = useAccount();
 
   const connectWalletHandler = () => {
     if (window.ethereum) {
@@ -96,28 +127,35 @@ function App() {
   return (
     <div className="App">
       <AppContext.Provider value={{ connectWalletHandler }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route
-            path="/mining"
-            element={
-              walletState.walletAddress && authState.isLoggedIn ? (
-                <MiningPage />
-              ) : walletState.walletAddress ? (
-                <LoginPage />
-              ) : (
-                <DoSthAfterRedirect
-                  callbackFn={() => toast.error("Connect Wallet first.")}
-                >
-                  <Navigate to="/" replace />
-                </DoSthAfterRedirect>
-              )
-            }
-          />
-          <Route path="/refferal-details" element={<RefferalDetailsPage />} />
-        </Routes>
+        <WagmiConfig client={wagmiClient}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/mining"
+              element={
+                walletState.walletAddress && authState.isLoggedIn ? (
+                  <MiningPage />
+                ) : walletState.walletAddress ? (
+                  <LoginPage />
+                ) : (
+                  <DoSthAfterRedirect
+                    callbackFn={() => toast.error("Connect Wallet first.")}
+                  >
+                    <Navigate to="/" replace />
+                  </DoSthAfterRedirect>
+                )
+              }
+            />
+            <Route path="/refferal-details" element={<RefferalDetailsPage />} />
+          </Routes>
+        </WagmiConfig>
+
+        <Web3Modal
+          projectId={API.WALLET_CONNECT_PROJECT_ID}
+          ethereumClient={ethereumClient}
+        />
       </AppContext.Provider>
       <Toaster />
     </div>
