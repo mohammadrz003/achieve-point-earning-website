@@ -70,12 +70,12 @@ const ManageIndividualPlans = ({ userProfile, setUserProfile }) => {
         />
       </Modal>
 
-      <div className="container max-w-5xl px-4 mx-auto sm:px-8">
+      <div className="w-full lg:w-2/3">
         <div className="py-8">
           <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
             <h2 className="text-2xl leading-tight">Active Plans</h2>
           </div>
-          <div className="mt-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+          <div className="mt-4 overflow-x-auto">
             <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
               <table className="min-w-full leading-normal">
                 <thead>
@@ -175,6 +175,9 @@ const ManageIndividualPlans = ({ userProfile, setUserProfile }) => {
                 </tbody>
               </table>
             </div>
+            {userProfile?.plans.length === 0 && (
+              <p className="text-center text-gray-500">you don't have any active plans!</p>
+            )}
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ const SignupPage = () => {
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
+    referedBy: "",
+    name: "",
   });
 
   const changeInputHandler = (e) => {
@@ -28,9 +30,11 @@ const SignupPage = () => {
     e.preventDefault();
     setIsSubmitted(true);
     const userAccountSchema = {
+      name: inputValues.name,
       email: inputValues.email,
       password: inputValues.password,
       Wallet: walletState.walletAddress,
+      referedBy: inputValues.referedBy,
     };
 
     try {
@@ -78,6 +82,16 @@ const SignupPage = () => {
           <div className="w-full">
             <input
               className="w-full border-b-2 border-b-gray-200 focus:outline-none py-3"
+              type="text"
+              name="name"
+              placeholder="Name"
+              onChange={changeInputHandler}
+              value={inputValues.name}
+            />
+          </div>
+          <div className="w-full">
+            <input
+              className="w-full border-b-2 border-b-gray-200 focus:outline-none py-3"
               type="email"
               name="email"
               placeholder="Email"
@@ -93,6 +107,16 @@ const SignupPage = () => {
               placeholder="Password"
               onChange={changeInputHandler}
               value={inputValues.password}
+            />
+          </div>
+          <div className="w-full">
+            <input
+              className="w-full border-b-2 border-b-gray-200 focus:outline-none py-3"
+              type="text"
+              name="referedBy"
+              placeholder="Referral code (optional)"
+              onChange={changeInputHandler}
+              value={inputValues.referedBy}
             />
           </div>
           <div className="w-full flex items-center justify-between text-[#4D4F5C] pt-7">

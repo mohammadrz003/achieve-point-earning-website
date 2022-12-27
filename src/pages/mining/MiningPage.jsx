@@ -11,6 +11,7 @@ import axios from "axios";
 import { API, TOKEN } from "../../constants";
 import Profile from "../../components/Profile";
 import ManageIndividualPlans from "./ManageIndividualPlans";
+import ReferralDetails from "./ReferralDetails";
 
 const PLANS_DATA = [
   {
@@ -150,10 +151,16 @@ const MiningPage = () => {
                 </div>
               ))}
             </div>
-            <ManageIndividualPlans
-              userProfile={userProfile}
-              setUserProfile={setUserProfile}
-            />
+            <div className="w-full flex flex-col lg:gap-x-5 lg:flex-nowrap lg:flex-row lg:items-start lg:justify-start">
+              <ManageIndividualPlans
+                userProfile={userProfile}
+                setUserProfile={setUserProfile}
+              />
+              <ReferralDetails
+                userProfile={userProfile}
+                setUserProfile={setUserProfile}
+              />
+            </div>
           </section>
         </div>
       </Layout>

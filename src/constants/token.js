@@ -51,6 +51,7 @@ const networkType = "MAINNET";
 const planOneMinimum = 25;
 const planTwoMinimum = 250;
 const planThreeMinimum = 500;
+const apeTokenPrice = 4;
 
 const TOKEN = {
   busdContract,
@@ -60,6 +61,7 @@ const TOKEN = {
   planOneMinimum,
   planTwoMinimum,
   planThreeMinimum,
+  apeTokenPrice,
 };
 
 export default TOKEN;

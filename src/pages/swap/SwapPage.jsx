@@ -26,11 +26,14 @@ const SwapPage = ({
   const inputChangeHandler = (name, value) => {
     if (name === "busdAmount") {
       setInputValues((curState) => {
-        return { [name]: value, apeAmount: (+value * 1) / 4 };
+        return { [name]: value, apeAmount: (+value * 1) / TOKEN.apeTokenPrice };
       });
     } else {
       setInputValues((curState) => {
-        return { [name]: value, busdAmount: (+value * 4) / 1 };
+        return {
+          [name]: value,
+          busdAmount: (+value * TOKEN.apeTokenPrice) / 1,
+        };
       });
     }
   };
