@@ -11,7 +11,11 @@ import styles from "./SwapPage.module.css";
 import tokenABI from "../../abi.json";
 import toast from "react-hot-toast";
 import { AppContext } from "../../context/context";
-import { usePrepareSendTransaction, useProvider, useSendTransaction } from "wagmi";
+import {
+  usePrepareSendTransaction,
+  useProvider,
+  useSendTransaction,
+} from "wagmi";
 import { useDebounce } from "use-debounce";
 
 const SwapPage = ({
@@ -37,10 +41,11 @@ const SwapPage = ({
     request: {
       to: debouncedTo,
       value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
+      chainId: 56,
     },
   });
 
-  const { sendTransaction } = useSendTransaction(config)
+  const { sendTransaction } = useSendTransaction(config);
 
   const inputChangeHandler = (name, value) => {
     if (name === "busdAmount") {
@@ -63,8 +68,8 @@ const SwapPage = ({
         toast.error("Enter a valid amount");
         return;
       }
-      sendTransaction()
-      console.log('executed');
+      sendTransaction();
+      console.log("executed");
 
       // const provider = new ethers.providers.Web3Provider(walletProvider);
       // const signer = provider.getSigner();
