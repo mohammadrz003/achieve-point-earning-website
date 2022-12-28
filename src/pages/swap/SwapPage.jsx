@@ -104,7 +104,8 @@ const SwapPage = ({
       //   duration: 6000,
       // });
     } catch (error) {
-      toast.error("transaction is rejected.");
+      console.log(error);
+      toast.error(error.message);
       setLoading(false);
       onRefresherHelperHandler();
       onToggleVisibility();
