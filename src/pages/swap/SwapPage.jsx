@@ -63,7 +63,8 @@ const SwapPage = ({
         toast.error("Enter a valid amount");
         return;
       }
-      sendTransaction?.()
+      sendTransaction()
+      console.log('executed');
 
       // const provider = new ethers.providers.Web3Provider(walletProvider);
       // const signer = provider.getSigner();
