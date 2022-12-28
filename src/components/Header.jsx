@@ -24,12 +24,18 @@ const Header = () => {
     <section>
       <header className="mx-auto container flex flex-col items-between lg:flex-row lg:justify-between px-5 py-5 flex-wrap lg:flex-nowrap">
         <div className="flex w-full justify-between lg:w-auto">
-          <div className="flex items-center space-x-3">
-            <img className="w-10 lg:w-14 h-auto" src={images.logo} alt="logo" />
-            <h1 className="text-sm lg:text-base font-bold">
-              Achive Point Earning
-            </h1>
-          </div>
+          <Link to="/">
+            <div className="flex items-center space-x-3">
+              <img
+                className="w-10 lg:w-14 h-auto"
+                src={images.logo}
+                alt="logo"
+              />
+              <h1 className="text-sm lg:text-base font-bold">
+                Achive Point Earning
+              </h1>
+            </div>
+          </Link>
           {showHeader ? (
             <IoCloseOutline
               className="w-7 h-7 lg:hidden"
@@ -76,7 +82,7 @@ const Header = () => {
               About us
             </Link>
           </li>
-          {walletState.walletAddress.length > 0 && !authState.isLoggedIn && (
+          {walletState?.walletAddress?.length > 0 && !authState.isLoggedIn && (
             <li className="w-full lg:w-auto mt-2 lg:mt-0">
               <Link
                 to="/login"

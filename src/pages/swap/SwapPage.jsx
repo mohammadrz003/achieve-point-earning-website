@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FiShare } from "react-icons/fi";
 import { BsFillHexagonFill } from "react-icons/bs";
 import { BiTransfer } from "react-icons/bi";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import axios from "axios";
 
 import SwapSelectedToken from "../../components/SwapSelectedToken";
@@ -10,6 +10,9 @@ import { API, images, TOKEN } from "../../constants";
 import styles from "./SwapPage.module.css";
 import tokenABI from "../../abi.json";
 import toast from "react-hot-toast";
+import { AppContext } from "../../context/context";
+import { usePrepareSendTransaction, useProvider, useSendTransaction } from "wagmi";
+import { useDebounce } from "use-debounce";
 
 const SwapPage = ({
   userProfile,
@@ -18,10 +21,26 @@ const SwapPage = ({
   loading,
   setLoading,
 }) => {
+  const walletProvider = useProvider({
+    chainId: 56,
+  });
+
+  const [debouncedTo] = useDebounce(TOKEN.projectOwnerRecipientAddress, 500);
+
   const [inputValues, setInputValues] = useState({
     busdAmount: "0",
     apeAmount: "0",
   });
+  const [debouncedAmount] = useDebounce(inputValues.busdAmount, 500);
+
+  const { config } = usePrepareSendTransaction({
+    request: {
+      to: debouncedTo,
+      value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
+    },
+  });
+
+  const { sendTransaction } = useSendTransaction(config)
 
   const inputChangeHandler = (name, value) => {
     if (name === "busdAmount") {
@@ -44,38 +63,40 @@ const SwapPage = ({
         toast.error("Enter a valid amount");
         return;
       }
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      sendTransaction?.()
 
-      const tokenAddress = TOKEN.busdContract;
+      // const provider = new ethers.providers.Web3Provider(walletProvider);
+      // const signer = provider.getSigner();
 
-      const token = new ethers.Contract(tokenAddress, tokenABI, signer);
+      // const tokenAddress = TOKEN.busdContract;
 
-      setLoading(true);
-      const transaction = await token.transfer(
-        TOKEN.projectOwnerRecipientAddress,
-        ethers.utils.parseUnits(inputValues.busdAmount, "ether")
-      );
+      // const token = new ethers.Contract(tokenAddress, tokenABI, signer);
 
-      const { data } = await axios.post(
-        `${API.API_URL}/tokenTransfer/approveBusdPayment`,
-        {
-          user: {
-            email: userProfile.email,
-            Wallet: userProfile.Wallet,
-          },
-          transaction: transaction,
-          transferedBusdAmount: Number(inputValues.busdAmount),
-          network: TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
-        }
-      );
-      setLoading(false);
-      onRefresherHelperHandler();
-      onToggleVisibility();
-      toast.success(data.message, {
-        position: "top-center",
-        duration: 6000,
-      });
+      // setLoading(true);
+      // const transaction = await token.transfer(
+      //   TOKEN.projectOwnerRecipientAddress,
+      //   ethers.utils.parseUnits(inputValues.busdAmount, "ether")
+      // );
+
+      // const { data } = await axios.post(
+      //   `${API.API_URL}/tokenTransfer/approveBusdPayment`,
+      //   {
+      //     user: {
+      //       email: userProfile.email,
+      //       Wallet: userProfile.Wallet,
+      //     },
+      //     transaction: transaction,
+      //     transferedBusdAmount: Number(inputValues.busdAmount),
+      //     network: TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
+      //   }
+      // );
+      // setLoading(false);
+      // onRefresherHelperHandler();
+      // onToggleVisibility();
+      // toast.success(data.message, {
+      //   position: "top-center",
+      //   duration: 6000,
+      // });
     } catch (error) {
       toast.error("transaction is rejected.");
       setLoading(false);

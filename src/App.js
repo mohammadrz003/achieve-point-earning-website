@@ -45,26 +45,14 @@ const wagmiClient = createClient({
 // Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const walletState = useSelector((state) => state.wallet);
   const { address, isConnected } = useAccount();
 
-  const connectWalletHandler = () => {
-    if (window.ethereum) {
-      // matamask is installed
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((result) => {
-          accountChangeHandler(result);
-        });
-    } else {
-      toast.error("Install Metamask", {
-        position: "top-right",
-      });
-    }
-  };
+  // console.log(`address: ${address}`);
+  // console.log(`isConnected: ${isConnected}`);
 
   const getUserBalanceHandler = useCallback(
     (address) => {
@@ -124,9 +112,18 @@ function App() {
     }
   }, [accountChangeHandler]);
 
+  // set listener for wallet connection
+  useEffect(() => {
+    if (address && isConnected) {
+      dispatch(walletActions.setAccountAddress(address));
+      dispatch(authActions.setIsLoggedIn(false));
+      dispatch(authActions.setUser({}));
+    }
+  }, [address, isConnected, dispatch]);
+
   return (
     <div className="App">
-      <AppContext.Provider value={{ connectWalletHandler }}>
+      <AppContext.Provider value={{ provider: provider }}>
         <WagmiConfig client={wagmiClient}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -160,6 +157,6 @@ function App() {
       <Toaster />
     </div>
   );
-}
+};
 
 export default App;

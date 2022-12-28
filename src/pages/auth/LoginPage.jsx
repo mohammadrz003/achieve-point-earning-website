@@ -36,6 +36,8 @@ const LoginPage = () => {
       Wallet: walletState.walletAddress,
     };
 
+    console.log(userAccountSchema)
+
     try {
       const { data } = await axios.post(
         `${API.API_URL}/auth/login`,

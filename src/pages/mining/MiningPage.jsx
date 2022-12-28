@@ -12,6 +12,8 @@ import { API, TOKEN } from "../../constants";
 import Profile from "../../components/Profile";
 import ManageIndividualPlans from "./ManageIndividualPlans";
 import ReferralDetails from "./ReferralDetails";
+import { useWeb3ModalNetwork } from "@web3modal/react";
+import { bsc, bscTestnet } from "wagmi/chains";
 
 const PLANS_DATA = [
   {
@@ -59,8 +61,11 @@ const MiningPage = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refresherHelper, setRefresherHelper] = useState(0);
-
   const [showSwapModal, setShowSwapModal] = useState(false);
+
+  const { selectedChain, setSelectedChain } = useWeb3ModalNetwork();
+
+  // console.log(selectedChain.id); // getting the network chain id
 
   const showSwapModalHandler = async () => {
     if (!walletState.walletAddress) {
@@ -68,14 +73,19 @@ const MiningPage = () => {
         position: "top-center",
       });
     } else {
-      const switchNetworkResult = await handleNetworkSwitch(
-        TOKEN.networkType === "MAINNET" ? "bsc" : "bscTestnet"
-      );
-      if (switchNetworkResult === true) {
-        setShowSwapModal((curState) => {
-          return !curState;
-        });
-      }
+      setSelectedChain(bsc);
+      setShowSwapModal((curState) => {
+        return !curState;
+      });
+
+      // const switchNetworkResult = await handleNetworkSwitch(
+      //   TOKEN.networkType === "MAINNET" ? "bsc" : "bscTestnet"
+      // );
+      // if (switchNetworkResult === true) {
+      //   setShowSwapModal((curState) => {
+      //     return !curState;
+      //   });
+      // }
     }
   };
 
