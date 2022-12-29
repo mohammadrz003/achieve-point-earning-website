@@ -15,8 +15,13 @@ import {
   usePrepareSendTransaction,
   useProvider,
   useSendTransaction,
+  useWaitForTransaction,
+  useContract,
+  useSigner,
 } from "wagmi";
 import { useDebounce } from "use-debounce";
+import usePrevious from "../../hooks/usePrevious";
+import { useEffect } from "react";
 
 const SwapPage = ({
   userProfile,
@@ -28,6 +33,7 @@ const SwapPage = ({
   const walletProvider = useProvider({
     chainId: 56,
   });
+  const { data: signer, isError, isLoading } = useSigner();
 
   const [debouncedTo] = useDebounce(TOKEN.projectOwnerRecipientAddress, 500);
 
@@ -37,15 +43,33 @@ const SwapPage = ({
   });
   const [debouncedAmount] = useDebounce(inputValues.busdAmount, 500);
 
-  const { config } = usePrepareSendTransaction({
-    request: {
-      to: debouncedTo,
-      value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
-      chainId: 56,
-    },
+  const contract = useContract({
+    address: TOKEN.busdContract,
+    abi: tokenABI,
+    signerOrProvider: signer,
   });
 
-  const { sendTransaction } = useSendTransaction(config);
+  console.log(contract);
+
+  // const { config } = usePrepareSendTransaction({
+  //   request: {
+  //     to: debouncedTo,
+  //     value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
+  //     data: contract,
+  //   },
+  // });
+
+  // const { data, sendTransaction } = useSendTransaction(config);
+
+  // const {
+  //   isLoading,
+  //   isSuccess,
+  //   data: transactionData,
+  // } = useWaitForTransaction({
+  //   hash: data?.hash,
+  // });
+
+  // const prevTransaction = usePrevious({ hash: data?.hash, transactionData });
 
   const inputChangeHandler = (name, value) => {
     if (name === "busdAmount") {
@@ -68,7 +92,8 @@ const SwapPage = ({
         toast.error("Enter a valid amount");
         return;
       }
-      sendTransaction();
+      setLoading(true);
+      // sendTransaction?.();
       console.log("executed");
 
       // const provider = new ethers.providers.Web3Provider(walletProvider);
@@ -78,31 +103,33 @@ const SwapPage = ({
 
       // const token = new ethers.Contract(tokenAddress, tokenABI, signer);
 
-      // setLoading(true);
-      // const transaction = await token.transfer(
-      //   TOKEN.projectOwnerRecipientAddress,
-      //   ethers.utils.parseUnits(inputValues.busdAmount, "ether")
-      // );
+      setLoading(true);
+      const transaction = await contract.transfer(
+        TOKEN.projectOwnerRecipientAddress,
+        ethers.utils.parseUnits(inputValues.busdAmount, "ether")
+      );
 
-      // const { data } = await axios.post(
-      //   `${API.API_URL}/tokenTransfer/approveBusdPayment`,
-      //   {
-      //     user: {
-      //       email: userProfile.email,
-      //       Wallet: userProfile.Wallet,
-      //     },
-      //     transaction: transaction,
-      //     transferedBusdAmount: Number(inputValues.busdAmount),
-      //     network: TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
-      //   }
-      // );
-      // setLoading(false);
-      // onRefresherHelperHandler();
-      // onToggleVisibility();
-      // toast.success(data.message, {
-      //   position: "top-center",
-      //   duration: 6000,
-      // });
+      console.log("transaction", transaction);
+
+      const { data } = await axios.post(
+        `${API.API_URL}/tokenTransfer/approveBusdPayment`,
+        {
+          user: {
+            email: userProfile.email,
+            Wallet: userProfile.Wallet,
+          },
+          transaction: transaction,
+          transferedBusdAmount: Number(inputValues.busdAmount),
+          network: TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
+        }
+      );
+      setLoading(false);
+      onRefresherHelperHandler();
+      onToggleVisibility();
+      toast.success(data.message, {
+        position: "top-center",
+        duration: 6000,
+      });
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -111,6 +138,51 @@ const SwapPage = ({
       onToggleVisibility();
     }
   };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (data?.hash) {
+  //       if (prevTransaction.hash !== data?.hash) {
+  //         try {
+  //           const { data } = await axios.post(
+  //             `${API.API_URL}/tokenTransfer/approveBusdPayment`,
+  //             {
+  //               user: {
+  //                 email: userProfile.email,
+  //                 Wallet: userProfile.Wallet,
+  //               },
+  //               transaction: transactionData.to,
+  //               transferedBusdAmount: Number(inputValues.busdAmount),
+  //               network:
+  //                 TOKEN.networkType === "MAINNET" ? "MAINNET" : "TESTNET",
+  //             }
+  //           );
+  //           setLoading(false);
+  //           onRefresherHelperHandler();
+  //           onToggleVisibility();
+  //           toast.success(data.message, {
+  //             position: "top-center",
+  //             duration: 6000,
+  //           });
+  //         } catch (error) {
+  //           console.log(error);
+  //           toast.error(error.message);
+  //           setLoading(false);
+  //           onRefresherHelperHandler();
+  //           onToggleVisibility();
+  //         }
+  //       }
+  //     }
+  //   })();
+  // }, [
+  //   data?.hash,
+  //   prevTransaction,
+  //   setLoading,
+  //   transactionData?.to,
+  //   inputValues.busdAmount,
+  //   userProfile.Wallet,
+  //   userProfile.email,
+  // ]);
 
   return (
     // <Layout>
@@ -165,7 +237,7 @@ const SwapPage = ({
         onClick={submitHandler}
         type="button"
         className="disabled:opacity-50 disabled:cursor-not-allowed w-full text-center bg-cyan-500 text-white rounded-xl mt-6 px-3 py-3 font-semibold"
-        disabled={loading}
+        disabled={loading || !(Number(inputValues.busdAmount) > 0)}
       >
         {loading ? "Processing..." : "Buy Ape Token"}
       </button>
