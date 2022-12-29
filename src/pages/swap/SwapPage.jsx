@@ -132,7 +132,13 @@ const SwapPage = ({
       });
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(
+          "You probably don't have enough gas or something else went wrong!"
+        );
+      }
       setLoading(false);
       onRefresherHelperHandler();
       onToggleVisibility();

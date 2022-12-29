@@ -33,9 +33,6 @@ const Profile = ({ userProfile, onClickHandler }) => {
               Buy More
             </button>
           </dd>
-          <dd className="mt-2.5">
-            <Web3NetworkSwitch />
-          </dd>
         </dl>
       </div>
     </div>

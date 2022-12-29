@@ -26,11 +26,11 @@ import { Web3Modal } from "@web3modal/react";
 
 import { configureChains, createClient, WagmiConfig, useAccount } from "wagmi";
 
-import { bsc, bscTestnet } from "wagmi/chains";
+import { bsc } from "wagmi/chains";
 import { API } from "./constants";
 
 // configure
-const chains = [bsc, bscTestnet];
+const chains = [bsc];
 
 // Wagmi client
 const { provider } = configureChains(chains, [
@@ -115,6 +115,10 @@ const App = () => {
   // set listener for wallet connection
   useEffect(() => {
     if (address && isConnected) {
+      dispatch(walletActions.setAccountAddress(address));
+      dispatch(authActions.setIsLoggedIn(false));
+      dispatch(authActions.setUser({}));
+    } else {
       dispatch(walletActions.setAccountAddress(address));
       dispatch(authActions.setIsLoggedIn(false));
       dispatch(authActions.setUser({}));

@@ -82,18 +82,8 @@ const Header = () => {
               About us
             </Link>
           </li>
-          {walletState?.walletAddress?.length > 0 && !authState.isLoggedIn && (
-            <li className="w-full lg:w-auto mt-2 lg:mt-0">
-              <Link
-                to="/login"
-                className="w-full lg:w-auto text-center px-3 py-1.5 cursor-pointer border border-blue-600 text-blue-600 rounded-lg block"
-              >
-                Login
-              </Link>
-            </li>
-          )}
-          <li className="w-full lg:w-auto mt-2 lg:mt-0">
-            <Web3Button />
+          <li className="w-full lg:w-auto mt-2 lg:mt-0 flex justify-center">
+            <Web3Button icon="hide" />
             {/* <button
               onClick={connectWalletHandler}
               type="button"
@@ -107,6 +97,16 @@ const Header = () => {
                 : "Connect Wallet"}
             </button> */}
           </li>
+          {walletState?.walletAddress?.length > 0 && !authState.isLoggedIn && (
+            <li className="w-full lg:w-auto mt-2 lg:mt-0">
+              <Link
+                to="/login"
+                className="w-full lg:w-auto text-center px-3 py-1.5 cursor-pointer border border-blue-600 text-blue-600 rounded-lg block"
+              >
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
       </header>
     </section>

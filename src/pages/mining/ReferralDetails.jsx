@@ -132,16 +132,23 @@ const ReferralDetails = ({ userProfile, setUserProfile }) => {
             </tbody>
           </table>
         </div>
-        <p className="px-3 py-2 text-center bg-white rounded-lg mb-1">
-          Total earned reward from referral: {userProfile?.invitedBalance} BUSD
-        </p>
-        <button
-          disabled={loading}
-          onClick={claimReferralRewardHandler}
-          className="disabled:cursor-not-allowed disabled:opacity-70 w-full text-white font-medium py-3 px-3 rounded-lg bg-cyan-500 text-center"
-        >
-          Claim Referral Reward
-        </button>
+        {userProfile ? (
+          <>
+            <p className="px-3 py-2 text-center bg-white rounded-lg mb-1">
+              Total earned reward from referral: {userProfile?.invitedBalance}{" "}
+              BUSD
+            </p>
+            <button
+              disabled={loading || userProfile?.invitedBalance === 0}
+              onClick={claimReferralRewardHandler}
+              className="disabled:cursor-not-allowed disabled:opacity-70 w-full text-white font-medium py-3 px-3 rounded-lg bg-cyan-500 text-center"
+            >
+              Claim Referral Reward
+            </button>
+          </>
+        ) : (
+          <p>fetching referral details</p>
+        )}
       </div>
     </div>
   );

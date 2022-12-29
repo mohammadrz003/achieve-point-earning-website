@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import { TfiLock } from "react-icons/tfi";
@@ -21,15 +21,21 @@ const Plan = ({
   const [apeAmount, setApeAmount] = useState(
     planType === 1 ? 25 : planType === 2 ? 250 : 500
   );
+  const [isLocked, setIsLocked] = useState(true);
 
-  let isLocked = true;
-  if (planType === 1) {
-    isLocked = userProfile?.Balance < TOKEN.planOneMinimum ? true : false;
-  } else if (planType === 2) {
-    isLocked = userProfile?.Balance < TOKEN.planTwoMinimum ? true : false;
-  } else if (planType === 3) {
-    isLocked = userProfile?.Balance < TOKEN.planThreeMinimum ? true : false;
-  }
+  useEffect(() => {
+    if (userProfile) {
+      if (planType === 1) {
+        setIsLocked(userProfile?.Balance < TOKEN.planOneMinimum ? true : false);
+      } else if (planType === 2) {
+        setIsLocked(userProfile?.Balance < TOKEN.planTwoMinimum ? true : false);
+      } else if (planType === 3) {
+        setIsLocked(
+          userProfile?.Balance < TOKEN.planThreeMinimum ? true : false
+        );
+      }
+    }
+  }, [planType, userProfile?.Balance, userProfile]);
 
   const inputChangeHandler = (e) => {
     setApeAmount(e.target.value);
