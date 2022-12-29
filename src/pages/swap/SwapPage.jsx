@@ -200,7 +200,6 @@ const SwapPage = ({
       <div className="w-full flex justify-between items-center">
         <div className="space-y-1">
           <h3 className="font-bold text-gray-800">Apecoin price instantly</h3>
-          <h5 className="text-gray-700 text-xs">May 10 th 2021, 3:15:23 pm</h5>
         </div>
         <button
           type="button"
