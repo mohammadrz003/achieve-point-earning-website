@@ -46,7 +46,7 @@ const networks = {
 
 const busdContract = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56";
 const projectOwnerRecipientAddress =
-  "0xced7B359382bF3f84BE715B496CbA83887aD3529";
+  "0x982dd665522fA70e2b20544d3DAd58f772fbDad9";
 const networkType = "MAINNET";
 const planOneMinimum = 25;
 const planTwoMinimum = 250;
