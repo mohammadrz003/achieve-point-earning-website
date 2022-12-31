@@ -68,6 +68,9 @@ const MiningPage = () => {
   // console.log(selectedChain.id); // getting the network chain id
 
   const showSwapModalHandler = async () => {
+    if (loading) {
+      return;
+    }
     if (!walletState.walletAddress) {
       toast.error("Connect your metamask account first.", {
         position: "top-center",

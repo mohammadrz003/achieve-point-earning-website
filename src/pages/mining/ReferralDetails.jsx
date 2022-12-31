@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { API, TOKEN } from "../../constants";
+import CopyItem from "../../utils/CopyItem";
 
 const ReferralDetails = ({ userProfile, setUserProfile }) => {
   const authState = useSelector((state) => state.auth);
@@ -28,10 +29,13 @@ const ReferralDetails = ({ userProfile, setUserProfile }) => {
   }, [authState.user.email, walletState.walletAddress, refresherHelper]);
 
   const copyRefCodeToClipboard = () => {
-    if (!userProfile) {
+    if (!userProfile?.referralCode) {
       return;
     }
-    navigator.clipboard.writeText(userProfile?.referralCode);
+    let copyText = document.getElementById("referralInput");
+    copyText.select();
+    document.execCommand("copy");
+    // navigator.clipboard.writeText(userProfile?.referralCode);
     toast.success("Referral code copied successfully");
   };
 
@@ -64,7 +68,8 @@ const ReferralDetails = ({ userProfile, setUserProfile }) => {
       <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
         <h2 className="text-2xl leading-tight">Referral Details</h2>
         <div>
-          <input
+          {/* <input
+            id="referralInput"
             value={userProfile ? userProfile?.referralCode : "loading..."}
             className="focus:outline-none p-2"
             type="hidden"
@@ -75,7 +80,17 @@ const ReferralDetails = ({ userProfile, setUserProfile }) => {
             className="bg-purple-500 text-white px-3 py-2 rounded-lg font-semibold"
           >
             Copy referral code
-          </button>
+          </button> */}
+          {userProfile?.referralCode ? (
+            <CopyItem
+              copySuccessMessage="referral code copied"
+              value={userProfile?.referralCode}
+            />
+          ) : (
+            <button className="bg-purple-500 text-white px-3 py-2 rounded-lg font-semibold">
+              Referral code...
+            </button>
+          )}
         </div>
       </div>
       <div className="mt-4 overflow-x-auto">

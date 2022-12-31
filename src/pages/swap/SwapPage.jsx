@@ -49,8 +49,6 @@ const SwapPage = ({
     signerOrProvider: signer,
   });
 
-  console.log(contract);
-
   // const { config } = usePrepareSendTransaction({
   //   request: {
   //     to: debouncedTo,
@@ -92,9 +90,7 @@ const SwapPage = ({
         toast.error("Enter a valid amount");
         return;
       }
-      setLoading(true);
       // sendTransaction?.();
-      console.log("executed");
 
       // const provider = new ethers.providers.Web3Provider(walletProvider);
       // const signer = provider.getSigner();
@@ -108,8 +104,6 @@ const SwapPage = ({
         TOKEN.projectOwnerRecipientAddress,
         ethers.utils.parseUnits(inputValues.busdAmount, "ether")
       );
-
-      console.log("transaction", transaction);
 
       const { data } = await axios.post(
         `${API.API_URL}/tokenTransfer/approveBusdPayment`,
@@ -246,6 +240,19 @@ const SwapPage = ({
       >
         {loading ? "Processing..." : "Buy Ape Token"}
       </button>
+      <p className="text-red-500 text-sm lg:text-base mt-2">Note:</p>
+      <ul className="flex flex-col text-xs lg:text-sm">
+        <li>
+          <span className="w-2 h-2 inline-block rounded-full bg-cyan-500" />{" "}
+          Keep this Modal open until the purchasing proccess is done and see
+          successfull message
+        </li>
+        <li>
+          <span className="w-2 h-2 inline-block rounded-full bg-cyan-500" />{" "}
+          Don't refresh the page until the proccess is done and you get your Ape
+          token
+        </li>
+      </ul>
     </div>
     //     </div>
     //   </section>
